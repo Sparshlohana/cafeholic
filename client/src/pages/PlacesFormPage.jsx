@@ -91,7 +91,7 @@ const PlacesFormPage = () => {
       return;
     }
     setLoading(true);
-    axiosInstance.get(`/places/${id}`).then((response) => {
+    axiosInstance.get(`/cafe/${id}`).then((response) => {
       const { place } = response.data;
       // update the state of formData
       for (let key in formData) {
@@ -130,14 +130,14 @@ const PlacesFormPage = () => {
     if (formDataIsValid) {
       if (id) {
         // update existing place
-        const { data } = await axiosInstance.put('/places/update-place', {
+        const { data } = await axiosInstance.put('/cafe/update-place', {
           id,
           ...placeData,
         });
       } else {
         // new place
         const { data } = await axiosInstance.post(
-          '/places/add-cafe',
+          '/cafe/add-cafe',
           placeData,
         );
       }
@@ -146,7 +146,7 @@ const PlacesFormPage = () => {
   };
 
   if (redirect) {
-    return <Navigate to={'/account/places'} />;
+    return <Navigate to={'/account/cafe'} />;
   }
 
   if (loading) {

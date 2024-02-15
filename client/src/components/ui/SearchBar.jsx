@@ -19,7 +19,7 @@ const SearchBar = () => {
       setSearchTimeout(
         setTimeout(async () => {
           const { data } = await axiosInstance.get(
-            `/places/search/${searchText.trimStart()}`,
+            `/cafe/search/${searchText.trimStart()}`,
           );
           setPlaces(data);
           setLoading(false);

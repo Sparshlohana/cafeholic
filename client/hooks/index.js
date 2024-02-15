@@ -154,7 +154,7 @@ export const useProvidePlaces = () => {
     const [loading, setLoading] = useState(true);
 
     const getPlaces = async () => {
-        const { data } = await axiosInstance.get('/places');
+        const { data } = await axiosInstance.get('/cafe');
         setPlaces(data.places);
         setLoading(false);
     };

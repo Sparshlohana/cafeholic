@@ -35,6 +35,6 @@ const cafeSchema = new mongoose.Schema({
   }
 });
 
-const Cafe = mongoose.model("Cafe", cafeSchema);
+const Cafe = mongoose.model("Cafee", cafeSchema);
 
 module.exports = Cafe;

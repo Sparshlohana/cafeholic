@@ -14,7 +14,7 @@ const PlacesPage = () => {
   useEffect(() => {
     const getPlaces = async () => {
       try {
-        const { data } = await axiosInstance.get('places/user-cafes');
+        const { data } = await axiosInstance.get('cafe/user-cafes');
         setPlaces(data);
         setLoading(false);
       } catch (error) {
@@ -34,7 +34,7 @@ const PlacesPage = () => {
       <div className="text-center ">
         <Link
           className="inline-flex gap-1 rounded-full bg-primary py-2 px-6 text-white"
-          to={'/account/places/new'}
+          to={'/account/cafe/new'}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

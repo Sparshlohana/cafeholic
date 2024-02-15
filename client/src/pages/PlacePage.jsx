@@ -22,7 +22,7 @@ const PlacePage = () => {
     setLoading(true);
 
     const getPlace = async () => {
-      const { data } = await axiosInstance.get(`/places/${id}`);
+      const { data } = await axiosInstance.get(`/cafe/${id}`);
       setPlace(data.place);
       setLoading(false);
     };
