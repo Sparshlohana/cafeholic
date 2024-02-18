@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import axiosInstance from '@/utils/axios';
 
-import Spinner from '@/components/ui/Spinner';
 import AddressLink from '@/components/ui/AddressLink';
 import BookingWidget from '@/components/ui/BookingWidget';
 import PlaceGallery from '@/components/ui/PlaceGallery';
-import PerksWidget from '@/components/ui/PerksWidget';
+import Spinner from '@/components/ui/Spinner';
 
 const PlacePage = () => {
   const { id } = useParams();
@@ -23,7 +22,7 @@ const PlacePage = () => {
 
     const getPlace = async () => {
       const { data } = await axiosInstance.get(`/cafe/${id}`);
-      setPlace(data.place);
+      setPlace(data.cafe);
       setLoading(false);
     };
     getPlace();
@@ -51,7 +50,6 @@ const PlacePage = () => {
             {place.description}
           </div>
           Max number of guests: {place.maxGuests}
-          <PerksWidget perks={place?.perks} />
         </div>
         <div>
           <BookingWidget place={place} />

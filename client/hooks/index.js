@@ -34,6 +34,7 @@ export const useProvideAuth = () => {
                 password,
             });
             if (data.user && data.token) {
+                console.log(data.user);
                 setUser(data.user)
                 // save user and token in local storage
                 setItemsInLocalStorage('user', data.user)
@@ -154,8 +155,9 @@ export const useProvidePlaces = () => {
     const [loading, setLoading] = useState(true);
 
     const getPlaces = async () => {
-        const { data } = await axiosInstance.get('/cafe');
-        setPlaces(data.places);
+        const { data } = await axiosInstance?.get('/cafe');
+        console.log(data);
+        setPlaces(data?.Cafes);
         setLoading(false);
     };
 

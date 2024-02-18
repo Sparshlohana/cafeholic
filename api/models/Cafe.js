@@ -18,7 +18,6 @@ const cafeSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  perks: [{ type: String }],
   extraInfo: {
     type: String,
   },

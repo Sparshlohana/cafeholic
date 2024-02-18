@@ -9,24 +9,28 @@ exports.addCafe = async (req, res) => {
       address,
       addedPhotos,
       description,
+      categories,
       perks,
       extraInfo,
       maxGuests,
       price,
     } = req.body;
-    const Cafe = await Cafe.create({
+
+    const cafe = await Cafe.create({
       owner: userData.id,
       title,
       address,
       photos: addedPhotos,
       description,
+      category: categories,
       perks,
       extraInfo,
       maxGuests,
       price,
     });
+
     res.status(200).json({
-      Cafe,
+      cafe,
     });
   } catch (err) {
     res.status(500).json({
@@ -35,6 +39,7 @@ exports.addCafe = async (req, res) => {
     });
   }
 };
+
 
 // Returns user specific Cafes
 exports.userCafes = async (req, res) => {
@@ -109,16 +114,18 @@ exports.getCafes = async (req, res) => {
 exports.singleCafe = async (req, res) => {
   try {
     const { id } = req.params;
-    const Cafe = await Cafe.findById(id);
-    if (!Cafe) {
+    const cafe = await Cafe.findById(id);
+
+    if (!cafe) {
       return res.status(400).json({
         message: 'Cafe not found',
       });
     }
     res.status(200).json({
-      Cafe,
+      cafe,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: 'Internal serever error',
     });

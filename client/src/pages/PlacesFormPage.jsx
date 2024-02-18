@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import axiosInstance from '@/utils/axios';
+import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
+import Select from 'react-select';
 import { toast } from 'react-toastify';
 
-import axiosInstance from '@/utils/axios';
-
 import AccountNav from '@/components/ui/AccountNav';
-import Perks from '@/components/ui/Perks';
 import PhotosUploader from '@/components/ui/PhotosUploader';
 import Spinner from '@/components/ui/Spinner';
 
@@ -14,6 +13,7 @@ const PlacesFormPage = () => {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addedPhotos, setAddedPhotos] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -25,6 +25,7 @@ const PlacesFormPage = () => {
     checkOut: '',
     maxGuests: 10,
     price: 500,
+    categories: ''
   });
 
   const {
@@ -65,26 +66,34 @@ const PlacesFormPage = () => {
 
   const handleFormData = (e) => {
     const { name, value, type } = e.target;
-    // If the input is not a checkbox, update 'formData' directly
-    if (type !== 'checkbox') {
+
+    // If it's not a checkbox or not the 'categories' field, update 'formData' directly
+    if (type !== 'checkbox' && name !== 'categories') {
       setFormData({ ...formData, [name]: value });
       return;
     }
 
     // If type is checkbox (perks)
-    if (type === 'checkbox') {
-      const currentPerks = [...perks];
+    if (type === 'checkbox' && name === 'perks') {
+      const currentPerks = [...formData.perks];
       let updatedPerks = [];
 
       // Check if the perk is already in perks array
-      if (currentPerks.includes(name)) {
-        updatedPerks = currentPerks.filter((perk) => perk !== name);
+      console.log(value);
+      if (currentPerks.includes(value)) {
+        updatedPerks = currentPerks.filter((perk) => perk !== value);
       } else {
-        updatedPerks = [...currentPerks, name];
+        updatedPerks = [...currentPerks, value];
       }
       setFormData({ ...formData, perks: updatedPerks });
     }
+
+    // If 'categories' field, update based on the selected option
+    if (name === 'categories') {
+      setFormData({ ...formData, categories: value });
+    }
   };
+
 
   useEffect(() => {
     if (!id) {
@@ -119,6 +128,8 @@ const PlacesFormPage = () => {
     );
   };
 
+  console.log(formData);
+
   const savePlace = async (e) => {
     e.preventDefault();
 
@@ -149,6 +160,20 @@ const PlacesFormPage = () => {
     return <Navigate to={'/account/cafe'} />;
   }
 
+  const categoryOptions = [
+    { value: 'Aesthetic Café', label: 'Aesthetic Café' },
+    { value: 'Rooftop Café', label: 'Rooftop Café' },
+    { value: 'Family Café', label: 'Family Café' },
+    { value: 'Party Café', label: 'Party Café' },
+    { value: 'Café for Work', label: 'Café for Work' },
+    { value: 'Couple Café', label: 'Couple Café' },
+    { value: 'Celebration Café', label: 'Celebration Café' },
+    { value: 'Franchise Café', label: 'Franchise Café' },
+    { value: 'Hidden Café', label: 'Hidden Café' },
+    { value: 'Unique Café', label: 'Unique Café' },
+    { value: 'Pocket friendly Café', label: 'Pocket friendly Café' },
+    { value: 'Food focused Café', label: 'Food focused Café' },
+  ];
   if (loading) {
     return <Spinner />;
   }
@@ -178,6 +203,19 @@ const PlacesFormPage = () => {
           placeholder="address"
         />
 
+
+        {preInput('Category', 'Select the category of your place')}
+
+        <Select
+          defaultValue={selectedOption}
+          onChange={(selectedOption) => {
+            setSelectedOption(selectedOption);
+            handleFormData({ target: { name: 'categories', value: selectedOption.value, type: 'select' } });
+          }}
+          options={categoryOptions}
+          className='mt-2'
+        />
+
         {preInput('Photos', 'more = better')}
 
         <PhotosUploader
@@ -191,9 +229,6 @@ const PlacesFormPage = () => {
           name="description"
           onChange={handleFormData}
         />
-
-        {preInput('Perks', ' select all the perks of your place')}
-        <Perks selected={perks} handleFormData={handleFormData} />
 
         {preInput('Extra info', 'house rules, etc ')}
         <textarea

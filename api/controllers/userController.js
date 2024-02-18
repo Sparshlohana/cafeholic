@@ -7,11 +7,11 @@ const cloudinary = require('cloudinary').v2;
 // Register/SignUp user
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
-        message: 'Name, email and password are required',
+        message: 'Name, email, and password are required',
       });
     }
 
@@ -24,13 +24,15 @@ exports.register = async (req, res) => {
       });
     }
 
+    // Include the 'role' in the user creation if provided
     user = await User.create({
       name,
       email,
       password,
+      role: role || 'common', // If role is not provided, default to 'common'
     });
 
-    // after creating new user in DB send the token
+    // after creating a new user in DB, send the token
     cookieToken(user, res);
   } catch (err) {
     res.status(500).json({
@@ -39,6 +41,7 @@ exports.register = async (req, res) => {
     });
   }
 };
+
 
 // Login/SignIn user
 exports.login = async (req, res) => {
