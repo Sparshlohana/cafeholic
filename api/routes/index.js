@@ -55,6 +55,7 @@ router.post('/upload', upload.array('photos', 100), async (req, res) => {
 router.use('/user', require('./user'));
 router.use('/cafe', require('./cafe'));
 router.use('/bookings', require('./booking'));
+router.use('/payment', require('./payment'));
 
 
 module.exports = router;
