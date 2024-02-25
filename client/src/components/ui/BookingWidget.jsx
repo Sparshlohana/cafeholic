@@ -29,9 +29,9 @@ const BookingWidget = ({ place }) => {
   const numberOfNights =
     dateRange.from && dateRange.to
       ? differenceInDays(
-          new Date(dateRange.to).setHours(0, 0, 0, 0),
-          new Date(dateRange.from).setHours(0, 0, 0, 0),
-        )
+        new Date(dateRange.to).setHours(0, 0, 0, 0),
+        new Date(dateRange.from).setHours(0, 0, 0, 0),
+      )
       : 0;
 
   // handle booking form
@@ -82,6 +82,58 @@ const BookingWidget = ({ place }) => {
     }
   };
 
+  const initPayment = (data) => {
+    const options = {
+      key: "rzp_test_9N4JeqBFcl3a6A",
+      amount: data.amount * 100,
+      currency: 'INR',
+      name: 'Airbnb Clone',
+      description: 'Payment for booking',
+      image: '/favicon.ico',
+      order_id: data.id,
+      handler: async function (response) {
+        try {
+          const verified = await axiosInstance.post('/payment/verify', {
+            orderCreationId: data.id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+          });
+          console.log(verified.data);
+
+          handleBooking();
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      prefill: {
+        name,
+        email: user.email,
+        contact: phone,
+      },
+      theme: {
+        color: '#61dafb',
+      },
+    };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+
+  const handlePayment = async () => {
+    try {
+      const response = await axiosInstance.post('/payment/order', {
+        amount: numberOfNights * place.price,
+        currency: 'INR',
+        receipt: 'order_rcptid_11',
+      });
+      console.log(response.data);
+      initPayment(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
+
   if (redirect) {
     return <Navigate to={redirect} />;
   }
@@ -89,7 +141,7 @@ const BookingWidget = ({ place }) => {
   return (
     <div className="rounded-2xl bg-white p-4 shadow-xl">
       <div className="text-center text-xl">
-        Price: <span className="font-semibold">₹{place.price}</span> / per night
+        Price: <span className="font-semibold">₹{place.price}</span> / per booking
       </div>
       <div className="mt-4 rounded-2xl border">
         <div className="flex w-full ">
@@ -124,7 +176,7 @@ const BookingWidget = ({ place }) => {
           />
         </div>
       </div>
-      <button onClick={handleBooking} className="primary mt-4">
+      <button onClick={handlePayment} className="primary mt-4">
         Book this place
         {numberOfNights > 0 && <span> ₹{numberOfNights * place.price}</span>}
       </button>
