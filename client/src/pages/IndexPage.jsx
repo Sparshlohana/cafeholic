@@ -50,7 +50,7 @@ const IndexPage = () => {
   ];
 
   const filteredPlaces = selectedFilter !== null
-    ? places.filter((place) => place.category === categories[selectedFilter])
+    ? places?.filter((place) => place?.category?.includes(categories[selectedFilter]))
     : places;
 
 
@@ -71,8 +71,8 @@ const IndexPage = () => {
         ))}
       </div>
       <div className="grid grid-cols-1 py-32 justify-items-center px-4 md:grid-cols-2 md:gap-0 lg:grid-cols-3 lg:gap-2 xl:grid-cols-4 xl:gap-10">
-        {filteredPlaces.length > 0 ? (
-          filteredPlaces.map((place) => <PlaceCard place={place} key={place._id} />)
+        {filteredPlaces?.length > 0 ? (
+          filteredPlaces?.map((place) => <PlaceCard place={place} key={place._id} />)
         ) : (
           <div className="absolute left-1/3  right-1/2 top-72 flex w-full  transform flex-col p-10 md:w-1/2">
             <h1 className="text-3xl font-semibold">Result not found!</h1>

@@ -10,21 +10,17 @@ import axiosInstance from '../utils/axios';
 
 const SingleBookedPlace = () => {
   const { id } = useParams();
-  console.log('id: ', id);
   const [booking, setBooking] = useState({});
   const [loading, setLoading] = useState(false);
 
   const getBookings = async () => {
     try {
       setLoading(true);
-      const { data } = await axiosInstance.get('/bookings');
+      const { data } = await axiosInstance.post('/bookings/get', { id });
 
-      // filter the data to get current booking
-      const filteredBooking = data.booking.filter(
-        (booking) => booking._id === id,
-      );
 
-      setBooking(filteredBooking[0]);
+
+      setBooking(data.booking);
     } catch (error) {
       console.log('Error: ', error);
     } finally {

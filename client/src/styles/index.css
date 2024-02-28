@@ -74,3 +74,9 @@ button.social {
 .card {
   @apply h-[410px] w-[327px] sm:h-[500px] sm:w-[435px] md:h-[400px] md:w-[350px] lg:h-[400px] lg:w-[330px] xl:h-[350px] xl:w-[300px];
 }
+
+.react-datepicker-wrapper {
+  padding: 1rem 0.75rem;
+  @apply w-full;
+  border-bottom: 1px solid #d9d9d9;
+}

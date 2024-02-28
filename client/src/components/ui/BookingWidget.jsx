@@ -8,7 +8,7 @@ import axiosInstance from '@/utils/axios';
 import DatePickerWithRange from './DatePickerWithRange';
 
 const BookingWidget = ({ place }) => {
-  const [dateRange, setDateRange] = useState({ from: null, to: null });
+  const [dateRange, setDateRange] = useState({ from: null, to: null, timeRange: { start: '09:00', end: '17:00' } });
   const [bookingData, setBookingData] = useState({
     noOfGuests: 1,
     name: '',
@@ -26,13 +26,7 @@ const BookingWidget = ({ place }) => {
     }
   }, [user]);
 
-  const numberOfNights =
-    dateRange.from && dateRange.to
-      ? differenceInDays(
-        new Date(dateRange.to).setHours(0, 0, 0, 0),
-        new Date(dateRange.from).setHours(0, 0, 0, 0),
-      )
-      : 0;
+  const numberOfNights = dateRange.from ? 1 : 0;
 
   // handle booking form
   const handleBookingData = (e) => {
@@ -43,7 +37,7 @@ const BookingWidget = ({ place }) => {
   };
 
   const handleBooking = async () => {
-    // User must be signed in to book place
+    // User must be signed in to book a place
     if (!user) {
       return setRedirect(`/login`);
     }
@@ -59,17 +53,27 @@ const BookingWidget = ({ place }) => {
       return toast.error("Name can't be empty");
     } else if (phone.trim() === '') {
       return toast.error("Phone can't be empty");
+    } else if (!dateRange.from) {
+      return toast.error('Please select a valid date');
     }
+
+    const checkInDateTime = new Date(dateRange.from);
+    checkInDateTime.setHours(parseInt(dateRange.timeRange.start.split(':')[0], 10));
+    checkInDateTime.setMinutes(parseInt(dateRange.timeRange.start.split(':')[1], 10));
+
+    const checkOutDateTime = new Date(dateRange.to);
+    checkOutDateTime.setHours(parseInt(dateRange.timeRange.end.split(':')[0], 10));
+    checkOutDateTime.setMinutes(parseInt(dateRange.timeRange.end.split(':')[1], 10));
 
     try {
       const response = await axiosInstance.post('/bookings', {
-        checkIn: dateRange.from,
-        checkOut: dateRange.to,
+        checkIn: checkInDateTime,
+        checkOut: checkOutDateTime,
         noOfGuests,
         name,
         phone,
         place: id,
-        price: numberOfNights * price,
+        price: price, // Price is not multiplied by numberOfNights for single date
       });
 
       const bookingId = response.data.booking._id;
@@ -82,15 +86,17 @@ const BookingWidget = ({ place }) => {
     }
   };
 
+
   const initPayment = (data) => {
     const options = {
       key: "rzp_test_9N4JeqBFcl3a6A",
       amount: data.amount * 100,
       currency: 'INR',
-      name: 'Airbnb Clone',
+      name: 'CafeHolic',
       description: 'Payment for booking',
       image: '/favicon.ico',
       order_id: data.id,
+      phone: phone,
       handler: async function (response) {
         try {
           const verified = await axiosInstance.post('/payment/verify', {
@@ -144,7 +150,7 @@ const BookingWidget = ({ place }) => {
         Price: <span className="font-semibold">₹{place.price}</span> / per booking
       </div>
       <div className="mt-4 rounded-2xl border">
-        <div className="flex w-full ">
+        <div className="flex justify-center items-center w-full ">
           <DatePickerWithRange setDateRange={setDateRange} />
         </div>
         <div className="border-t py-3 px-4">

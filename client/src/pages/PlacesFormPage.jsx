@@ -14,6 +14,7 @@ const PlacesFormPage = () => {
   const [loading, setLoading] = useState(false);
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const user = JSON.parse(localStorage.getItem('user'));
   const userRoleData = user?.role;
 
@@ -83,7 +84,6 @@ const PlacesFormPage = () => {
       let updatedPerks = [];
 
       // Check if the perk is already in perks array
-      console.log(value);
       if (currentPerks.includes(value)) {
         updatedPerks = currentPerks.filter((perk) => perk !== value);
       } else {
@@ -92,32 +92,33 @@ const PlacesFormPage = () => {
       setFormData({ ...formData, perks: updatedPerks });
     }
 
-    // If 'categories' field, update based on the selected option
+    // If 'categories' field, update based on the selected options
     if (name === 'categories') {
-      setFormData({ ...formData, categories: value });
+      setSelectedCategories(value);
+      setFormData({ ...formData, categories: value.map(option => option.value) });
     }
   };
 
-
+  console.log(formData);
   useEffect(() => {
     if (!id) {
       return;
     }
     setLoading(true);
     axiosInstance.get(`/cafe/${id}`).then((response) => {
-      const { place } = response.data;
+      const { cafe } = response.data;
       // update the state of formData
       for (let key in formData) {
-        if (place.hasOwnProperty(key)) {
+        if (cafe.hasOwnProperty(key)) {
           setFormData((prev) => ({
             ...prev,
-            [key]: place[key],
+            [key]: cafe[key],
           }));
         }
       }
 
       // update photos state separately
-      setAddedPhotos([...place.photos]);
+      setAddedPhotos([...cafe.photos]);
 
       setLoading(false);
     });
@@ -143,7 +144,7 @@ const PlacesFormPage = () => {
     if (formDataIsValid) {
       if (id) {
         // update existing place
-        const { data } = await axiosInstance.put('/cafe/update-place', {
+        const { data } = await axiosInstance.put('/cafe/update-cafe', {
           id,
           ...placeData,
         });
@@ -210,13 +211,15 @@ const PlacesFormPage = () => {
 
         <Select
           defaultValue={selectedOption}
-          onChange={(selectedOption) => {
-            setSelectedOption(selectedOption);
-            handleFormData({ target: { name: 'categories', value: selectedOption.value, type: 'select' } });
+          onChange={(selectedCategories) => {
+            setSelectedOption(selectedCategories);
+            handleFormData({ target: { name: 'categories', value: selectedCategories, type: 'select' } });
           }}
           options={categoryOptions}
           className='mt-2'
+          isMulti
         />
+
 
         {preInput('Photos', 'more = better')}
 

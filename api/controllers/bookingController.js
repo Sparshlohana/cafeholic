@@ -88,3 +88,25 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
+// create a new api for getting single booking by id
+
+exports.getSingleBooking = async (req, res) => {
+  try {
+    const userData = req.user;
+    const { id } = req.body;
+    if (!userData) {
+      return res.status(401).json({ error: 'You are not authorized to access this page!' });
+    }
+
+    const booking = await Booking.findById(id).populate('place');
+
+    res.status(200).json({ booking, success: true });
+
+  } catch (err) {
+    console.error('Error fetching single booking:', err);
+    res.status(500).json({
+      message: 'Internal server error',
+      error: err,
+    });
+  }
+};

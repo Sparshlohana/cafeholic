@@ -80,9 +80,9 @@ exports.updateCafe = async (req, res) => {
       price,
     } = req.body;
 
-    const Cafe = await Cafe.findById(id);
-    if (userId === Cafe.owner.toString()) {
-      Cafe.set({
+    const CafeData = await Cafe.findById(id);
+    if (userId === CafeData.owner.toString()) {
+      CafeData.set({
         title,
         address,
         photos: addedPhotos,
@@ -92,12 +92,13 @@ exports.updateCafe = async (req, res) => {
         maxGuests,
         price,
       });
-      await Cafe.save();
+      await CafeData.save();
       res.status(200).json({
         message: 'Cafe updated!',
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: 'Internal server error',
       error: err,
