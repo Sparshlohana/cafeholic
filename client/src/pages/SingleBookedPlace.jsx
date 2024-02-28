@@ -10,6 +10,7 @@ import axiosInstance from '../utils/axios';
 
 const SingleBookedPlace = () => {
   const { id } = useParams();
+  console.log('id: ', id);
   const [booking, setBooking] = useState({});
   const [loading, setLoading] = useState(false);
 

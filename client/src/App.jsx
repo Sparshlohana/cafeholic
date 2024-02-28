@@ -19,6 +19,8 @@ import { PlaceProvider } from './providers/PlaceProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { getItemFromLocalStorage } from './utils';
 import NotFoundPage from './pages/NotFoundPage';
+import CafeRequest from './pages/CafeRequest';
+import AllBookings from './components/ui/AllBookings';
 
 function App() {
   useEffect(() => {
@@ -39,10 +41,12 @@ function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/account" element={<ProfilePage />} />
               <Route path="/account/cafe" element={<PlacesPage />} />
+              <Route path="/account/cafe-request" element={<CafeRequest />} />
               <Route path="/account/cafe/new" element={<PlacesFormPage />} />
               <Route path="/account/cafe/:id" element={<PlacesFormPage />} />
               <Route path="/place/:id" element={<PlacePage />} />
               <Route path="/account/bookings" element={<BookingsPage />} />
+              <Route path="/account/all-bookings" element={<AllBookings />} />
               <Route
                 path="/account/bookings/:id"
                 element={<SingleBookedPlace />}

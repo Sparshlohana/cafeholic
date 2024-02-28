@@ -22,7 +22,7 @@ const BookingDates = ({ booking, className }) => {
         new Date(booking.checkOut),
         new Date(booking.checkIn),
       )}
-      nights:
+      Days:
       <div className="ml-2 flex items-center gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"

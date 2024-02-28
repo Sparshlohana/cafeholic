@@ -8,7 +8,9 @@ const {
   updateCafe,
   singleCafe,
   userCafes,
-  searchCafes
+  searchCafes,
+  requestedCafes,
+  approveRejectCafe,
 } = require('../controllers/cafeController');
 
 router.route('/').get(getCafes);
@@ -17,6 +19,8 @@ router.route('/').get(getCafes);
 router.route('/add-cafe').post(isLoggedIn, addCafe);
 router.route('/user-cafes').get(isLoggedIn, userCafes);
 router.route('/update-cafe').put(isLoggedIn, updateCafe);
+router.route('/requested-cafe').get(isLoggedIn, requestedCafes);
+router.route('/approve').put(isLoggedIn, approveRejectCafe);
 
 // Not Protected routed but sequence should not be interfered with above routes
 router.route('/:id').get(singleCafe);

@@ -83,10 +83,10 @@ const BookingsPage = () => {
         ) : (
           <div className="">
             <div className="flex flex-col justify-start">
-              <h1 className="my-6 text-3xl font-semibold">Trips</h1>
+              <h1 className="my-6 text-3xl font-semibold">Oops</h1>
               <hr className="border border-gray-300" />
               <h3 className="pt-6 text-2xl font-semibold">
-                No trips booked... yet!
+                No cafe found!
               </h3>
               <p>
                 Time to dust off you bags and start planning your next adventure

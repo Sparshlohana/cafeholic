@@ -12,8 +12,8 @@ const PlaceCard = ({ place }) => {
             className="h-4/5 w-full rounded-xl object-cover"
           />
         )}
-        <h2 className="truncate font-bold">{address}</h2>
-        <h3 className="truncate text-sm text-gray-500">{title}</h3>
+        <h3 className="truncate font-bold">{title}</h3>
+        <h2 className="truncate font-bold text-sm text-gray-500">{address}</h2>
         {/* <div className="mt-1">
           <span className="font-semibold">₹{price} </span>
           per night

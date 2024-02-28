@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password,
-      role: role || 'common', // If role is not provided, default to 'common'
+      role: role || 'common',
     });
 
     // after creating a new user in DB, send the token

@@ -14,6 +14,8 @@ const PlacesFormPage = () => {
   const [loading, setLoading] = useState(false);
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userRoleData = user?.role;
 
   const [formData, setFormData] = useState({
     title: '',
@@ -25,7 +27,8 @@ const PlacesFormPage = () => {
     checkOut: '',
     maxGuests: 10,
     price: 500,
-    categories: ''
+    categories: '',
+    userRole: userRoleData,
   });
 
   const {
@@ -38,6 +41,7 @@ const PlacesFormPage = () => {
     checkOut,
     maxGuests,
     price,
+    userRole
   } = formData;
 
   const isValidPlaceData = () => {
@@ -127,8 +131,6 @@ const PlacesFormPage = () => {
       </>
     );
   };
-
-  console.log(formData);
 
   const savePlace = async (e) => {
     e.preventDefault();
@@ -254,7 +256,7 @@ const PlacesFormPage = () => {
             />
           </div>
           <div>
-            <h3 className="mt-2 -mb-1">Price per night</h3>
+            <h3 className="mt-2 -mb-1">Price</h3>
             <input
               type="number"
               name="price"
