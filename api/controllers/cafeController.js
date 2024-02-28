@@ -19,9 +19,10 @@ exports.addCafe = async (req, res) => {
     } = req.body;
 
     // Determine the value of 'request' based on userRole
-    const request = userRole === 'admin' ? false : true;
+    const requested = userRole === 'admin' ? false : true;
+    const approved = userRole === 'admin'; // Set approved to true if userRole is admin
 
-    console.log(request);
+    console.log(requested, approved);
 
     const cafe = await Cafe.create({
       owner: userData.id,
@@ -34,7 +35,8 @@ exports.addCafe = async (req, res) => {
       extraInfo,
       maxGuests,
       price,
-      requested: request,
+      requested,
+      approved,
     });
 
     res.status(200).json({
@@ -47,7 +49,6 @@ exports.addCafe = async (req, res) => {
     });
   }
 };
-
 
 
 // Returns user specific Cafes
