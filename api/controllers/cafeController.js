@@ -148,18 +148,26 @@ exports.searchCafes = async (req, res) => {
   try {
     const searchword = req.params.key;
 
-    if (searchword === '') return res.status(200).json(await Cafe.find())
+    if (searchword === '') {
+      // If searchword is empty, return all approved cafes
+      const allApprovedCafes = await Cafe.find({ approved: true });
+      return res.status(200).json(allApprovedCafes);
+    }
 
-    const searchMatches = await Cafe.find({ address: { $regex: searchword, $options: "i" } })
+    const searchMatches = await Cafe.find({
+      title: { $regex: searchword, $options: "i" },
+      approved: true,
+    });
 
     res.status(200).json(searchMatches);
   } catch (err) {
-    console.log(err)
+    console.error(err);
     res.status(500).json({
-      message: 'Internal serever error 1',
+      message: 'Internal server error',
     });
   }
-}
+};
+
 
 exports.requestedCafes = async (req, res) => {
   try {
