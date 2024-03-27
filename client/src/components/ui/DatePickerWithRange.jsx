@@ -24,6 +24,7 @@ export default function DatePickerWithRange({ className, setDateRange }) {
         onChange={handleDateSelect}
         dateFormat="dd/MM/yyyy"
         className={"w-full" + className}
+        minDate={new Date()}
       />
       <TimeRangePicker onSelect={handleTimeRangeSelect} />
     </div>

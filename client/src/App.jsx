@@ -21,6 +21,8 @@ import { getItemFromLocalStorage } from './utils';
 import NotFoundPage from './pages/NotFoundPage';
 import CafeRequest from './pages/CafeRequest';
 import AllBookings from './components/ui/AllBookings';
+import AllUsers from './components/ui/AllUsers';
+
 
 function App() {
   useEffect(() => {
@@ -47,6 +49,7 @@ function App() {
               <Route path="/place/:id" element={<PlacePage />} />
               <Route path="/account/bookings" element={<BookingsPage />} />
               <Route path="/account/all-bookings" element={<AllBookings />} />
+              <Route path="/account/all-users" element={<AllUsers />} />
               <Route
                 path="/account/bookings/:id"
                 element={<SingleBookedPlace />}

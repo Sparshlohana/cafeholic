@@ -10,6 +10,7 @@ import axiosInstance from '@/utils/axios';
 const AllBookings = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState([]);
     const user = JSON.parse(localStorage.getItem('user'));
     const userRole = user?.role;
 
@@ -34,8 +35,19 @@ const AllBookings = () => {
                 setLoading(false);
             }
         };
+        const getAllUsers = async () => {
+            try {
+                const { data } = await axiosInstance.get('/user/all');
+                setUsers(data.users);
+                setLoading(false);
+            } catch (error) {
+                console.log('Error: ', error);
+                setLoading(false);
+            }
+        };
         getBookings();
         getAllBookings();
+        getAllUsers();
     }, []);
 
     if (loading) return <Spinner />;
@@ -43,12 +55,12 @@ const AllBookings = () => {
     return (
         <div className="flex flex-col items-center">
             <AccountNav />
-            <div>
+            <div className='flex justify-center flex-col items-center'>
                 {bookings?.length > 0 ? (
                     bookings.map((booking) => (
                         <Link
                             to={`/account/bookings/${booking._id}`}
-                            className="mx-4 my-8 flex h-28 gap-4 overflow-hidden rounded-2xl bg-gray-200 md:h-40 lg:mx-0"
+                            className="mx-4 my-8 p-2 flex h-96	 gap-4  rounded-2xl bg-gray-200 md:h-fit w-1/2 lg:mx-0"
                             key={booking._id}
                         >
                             <div className="w-2/6 md:w-1/6">
@@ -59,10 +71,10 @@ const AllBookings = () => {
                                     />
                                 )}
                             </div>
-                            <div className="grow py-3 pr-3">
+                            <div className="  pr-3">
                                 <h2 className="md:text-2xl">{booking?.place?.title}</h2>
                                 <div className="md:text-xl">
-                                    <div className="flex gap-2 border-t "></div>
+                                    <div className="flex border-t "></div>
                                     <div className="md:text-xl">
                                         <BookingDates
                                             booking={booking}
@@ -84,8 +96,32 @@ const AllBookings = () => {
                                                     d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
                                                 />
                                             </svg>
-                                            <span className="text-xl md:text-2xl">
+                                            <span className="text-xl">
                                                 Total price: ₹{booking.price}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                {userRole === 'admin' ? (
+                                                    <>
+                                                        <span className='flex gap-3'>
+                                                            <span className="text-xl">
+                                                                Booked by:
+                                                            </span>
+                                                            <span className="text-xl">
+                                                                {user?.name}
+                                                            </span>
+                                                        </span>
+                                                        <span className='flex gap-3'>
+                                                            <span className="text-xl">
+                                                                Contact Number
+                                                            </span>
+                                                            <span className="text-xl">
+                                                                {booking?.phone}
+                                                            </span>
+                                                        </span>
+                                                    </>
+                                                ) : null}
                                             </span>
                                         </div>
                                     </div>

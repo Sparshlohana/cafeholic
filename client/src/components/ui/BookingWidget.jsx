@@ -127,6 +127,11 @@ const BookingWidget = ({ place }) => {
 
   const handlePayment = async () => {
     try {
+      // Don't allow booking of Number of guests more than maxGuests
+      if (noOfGuests > place.maxGuests) {
+        return toast.error(`Allowed max. no. of guests: ${place.maxGuests}`);
+      }
+
       const response = await axiosInstance.post('/payment/order', {
         amount: numberOfNights * place.price,
         currency: 'INR',
@@ -175,7 +180,7 @@ const BookingWidget = ({ place }) => {
           />
           <label>Phone number: </label>
           <input
-            type="tel"
+            type="number"
             name="phone"
             value={phone}
             onChange={handleBookingData}
