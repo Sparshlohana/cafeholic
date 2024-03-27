@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 function TimeRangePicker({ onSelect }) {
-    const [startTime, setStartTime] = useState('09:00');
-    const [endTime, setEndTime] = useState('17:00');
+    const [startTime, setStartTime] = useState('17:00');
+    const [endTime, setEndTime] = useState('19:00');
 
     const handleStartTimeChange = (e) => {
         const newStartTime = e.target.value;

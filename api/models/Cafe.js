@@ -29,7 +29,7 @@ const cafeSchema = new mongoose.Schema({
   },
   category: [{
     type: String,
-    enum: ["Aesthetic Café", "Rooftop Café", "Family Café", "Party Café", "Café for Work", "Couple Café", "Celebration Café", "Franchise Café", "Hidden Café", "Unique Café", "Pocket-friendly Café", "Food-focused Café"],
+    enum: ["Aesthetic Café", "Rooftop Café", "Family Café", "Party Café", "Café for Work", "Couple Café", "Celebration Café", "Franchise Café", "Hidden Café", "Unique Café", "Pocket friendly Café", "Food focused Café"],
     required: true,
   }],
   requested: {

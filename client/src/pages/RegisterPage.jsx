@@ -69,6 +69,8 @@ const RegisterPage = () => {
             name="password"
             type="password"
             placeholder="password"
+            minLength={5}
+            maxLength={15}
             value={formData.password}
             onChange={handleFormData}
           />

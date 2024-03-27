@@ -8,7 +8,7 @@ import axiosInstance from '@/utils/axios';
 import DatePickerWithRange from './DatePickerWithRange';
 
 const BookingWidget = ({ place }) => {
-  const [dateRange, setDateRange] = useState({ from: null, to: null, timeRange: { start: '09:00', end: '17:00' } });
+  const [dateRange, setDateRange] = useState({ from: null, to: null, timeRange: { start: '17:00', end: '19:00' } });
   const [bookingData, setBookingData] = useState({
     noOfGuests: 1,
     name: '',
@@ -79,7 +79,7 @@ const BookingWidget = ({ place }) => {
       const bookingId = response.data.booking._id;
 
       setRedirect(`/account/bookings/${bookingId}`);
-      toast('Congratulations! Enjoy your trip.');
+      toast('Congratulations! Your table is booked.');
     } catch (error) {
       toast.error('Something went wrong!');
       console.log('Error: ', error);
@@ -89,7 +89,7 @@ const BookingWidget = ({ place }) => {
 
   const initPayment = (data) => {
     const options = {
-      key: "rzp_test_9N4JeqBFcl3a6A",
+      key: "rzp_test_ZywlYaqP7cX6NB",
       amount: data.amount * 100,
       currency: 'INR',
       name: 'CafeHolic',
